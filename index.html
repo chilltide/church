@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HEAVEN</title>
+    <style>
+        body {
+            background-image: url('heaven might be this idk.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            overflow: hidden;
+        }
+        .content {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            visibility: hidden;
+        }
+        .angel {
+            width: 100px;
+            height: 100px;
+            background-image: url('angel.gif');
+            background-size: cover;
+            margin: 0 20px;
+            position: relative;
+            animation: float 3s infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        @keyframes fly {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-50px, calc(100vh - 200px)) scale(1.9); }
+        }
+        .fly {
+            animation: fly 3s forwards; /* Apply fly animation when this class is added */
+        }
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+        #overlay img {
+            max-width: 80%;
+            cursor: pointer;
+        }
+        #overlay p {
+            margin-top: 20px;
+            font-size: 16px;
+            color: black;
+        }
+        .bell-container {
+            position: absolute;
+            bottom: 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .bell {
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+        }
+        .bell-text {
+            font-size: 18px;
+            color: white;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s, opacity 1s;
+            opacity: 0;
+        }
+        .bell-text.show {
+            opacity: 1;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        .fade-out {
+            animation: fadeOut 1s forwards;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .message, #letter-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            display: none; /* Initially hidden */
+            z-index: 2;
+        }
+        #letter-container {
+            flex-direction: column;
+            align-items: center;
+            display: none; /* Ensure it's hidden initially */
+            opacity: 1; /* Start with full opacity */
+        }
+        #letter {
+            max-width: 80%;
+            max-height: 80%;
+            cursor: pointer;
+        }
+        #letter-text {
+            margin-top: 10px;
+            font-size: 18px;
+            color: white;
+        }
+        #paper-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none; /* Ensure it's hidden initially */
+            z-index: 3;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            justify-content: center; /* Center the contents */
+            align-items: center; /* Center vertically */
+        }
+        #paper {
+            max-width: 60%; /* Adjust size for the paper image */
+            max-height: 60%; /* Adjust size for the paper image */
+        }
+        #cute-photo {
+            position: absolute; /* Position absolute to overlay it on the paper */
+            z-index: 4; /* Ensure it's above the paper */
+            max-width: 40%; /* Adjust the size for cute images */
+            max-height: 40%; /* Adjust the size for cute images */
+            display: none; /* Initially hidden */
+        }
+        #cute-message {
+            color: white; /* Color for the message */
+            font-size: 20px; /* Font size for the message */
+            margin-top: 10px; /* Space between image and message */
+            display: none; /* Initially hidden */
+        }
+        #back-button {
+            margin-top: 20px;
+            font-size: 18px;
+            color: white;
+            background-color: #28A745;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #back-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="overlay">
+        <img src="holly door.jpg" alt="Holly Door" onclick="revealContent()">
+        <p>Click the door to enter the church</p>
+    </div>
+    <div class="content">
+        <div class="angel" id="angel1"></div>
+        <div>
+            <h1>Welcome to Heaven</h1>
+            <h2>This is heaven</h2>
+            <h3>Make yourself comfortable</h3>
+        </div>
+        <div class="angel" id="angel2"></div>
+    </div>
+    <div class="bell-container">
+        <img src="is it okay to call jesus with bell.png" class="bell" alt="Bell" onclick="playBell()">
+        <div class="bell-text" id="meetJesus" onclick="showMessageSequence()">Meet Jesus?</div>
+    </div>
+
+    <div class="message" id="message1" onclick="nextMessage()">Sorry he is out now.</div>
+    <div class="message" id="message2" onclick="nextMessage()">But I have a letter from him.</div>
+    <div id="letter-container">
+        <img src="letter.png" id="letter" alt="Letter from Jesus" onclick="showPaperOverlay()">
+        <div id="letter-text">Here is the letter.<br>click to open</div>
+    </div>
+
+    <!-- Overlay display for paper.png and images from CUTE folder -->
+    <div id="paper-overlay">
+        <img src="paper.png" id="paper" alt="Paper">
+        <img src="CUTE/photo.jpg" id="cute-photo" alt="Cute Photo">
+        <div id="cute-message"></div> <!-- Message under the cute photo -->
+        <button id="back-button" onclick="returnToMainPage()">Back to Main Page</button> <!-- Back button -->
+    </div>
+
+    <audio id="audio" src="holly song.mp3" loop></audio>
+    <audio id="bell-audio" src="holly bell.mp3"></audio>
+    
+    <script>
+        // List of cute images and their messages
+        const cuteImages = [
+            { src: 'CUTE/Baby.jfif', message: 'Hang in there, little one! 🌳💤' },
+            { src: 'CUTE/cat.jfif', message: 'Love knows no bounds. 🐶❤️🐱' },
+            { src: 'CUTE/Squirrel.jfif', message: 'Adorable little florist! 🌸🐿️' },
+            { src: 'CUTE/deer.jfif', message: 'Nature\'s gentle embrace. 🌿🦌🐇' },
+            { src: 'CUTE/deer2.jfif', message: 'Such a gentle moment. 🦌💖' },
+            { src: 'CUTE/Duck.jfif', message: 'Double dose of cuteness! 🐥🐸' },
+            { src: 'CUTE/Quokka.jfif', message: 'Pure joy in the fluffiest form! 😄🦘' },
+            { src: 'CUTE/owl.jfif', message: 'Too cute to handle! 🦉💕' }
+        ];
+
+        function revealContent() {
+            document.getElementById('overlay').style.display = 'none';
+            document.querySelector('.content').style.visibility = 'visible';
+            document.getElementById('audio').play();
+        }
+        
+        function playBell() {
+            var bellAudio = document.getElementById('bell-audio');
+            bellAudio.pause();
+            bellAudio.currentTime = 0;
+            bellAudio.play();
+
+            var angel2 = document.getElementById('angel2');
+            angel2.classList.add('fly'); // Only the right angel flies down
+
+            document.getElementById('meetJesus').classList.add('show'); // Show the text after
+            setTimeout(function() {
+                document.getElementById('meetJesus').classList.add('show'); // Show "Meet Jesus?" text after bell sound
+            }, 1500); // Delay appearance of "Meet Jesus?" text
+        }
+
+        let currentMessage = 0;
+        const messages = ["Sorry he is out now.", "But I have a letter from him."];
+
+        function showMessageSequence() {
+            if (currentMessage < messages.length) {
+                document.getElementById('message' + (currentMessage + 1)).style.display = 'block';
+            }
+        }
+
+        function nextMessage() {
+            document.getElementById('message' + (currentMessage + 1)).style.display = 'none';
+            currentMessage++;
+            if (currentMessage < messages.length) {
+                showMessageSequence();
+            } else {
+                document.getElementById('letter-container').style.display = 'flex'; // Show letter after last message
+            }
+        }
+
+        function showPaperOverlay() {
+            document.getElementById('letter-container').style.display = 'none'; // Hide the letter container
+            document.getElementById('paper-overlay').style.display = 'flex'; // Display the paper overlay
+
+            // Randomly select a cute image and message
+            const randomCuteItem = cuteImages[Math.floor(Math.random() * cuteImages.length)];
+            const cutePhoto = document.getElementById('cute-photo');
+            const cuteMessage = document.getElementById('cute-message');
+
+            cutePhoto.src = randomCuteItem.src;
+            cutePhoto.style.display = 'block'; // Show the cute photo
+            cuteMessage.textContent = randomCuteItem.message;
+            cuteMessage.style.display = 'block'; // Show the cute message
+        }
+
+        function returnToMainPage() {
+            document.getElementById('paper-overlay').style.display = 'none'; // Hide paper overlay
+            document.getElementById('letter-container').style.display = 'none'; // Ensure letter is hidden
+            currentMessage = 0; // Reset message sequence for next interaction
+
+            document.querySelector('.content').style.visibility = 'hidden'; // Hide content
+            document.getElementById('overlay').style.display = 'flex'; // Show overlay again
+            document.getElementById('audio').pause(); // Stop background audio
+        }
+    </script>
+
+</body>
+</html>
